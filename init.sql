@@ -1,5 +1,5 @@
 -- Create "greenlight" role with password auth
-CREATE ROLE greenlight WITH LOGIN PASSWORD 'pa$$word';
+CREATE ROLE greenlight WITH LOGIN PASSWORD 'pa55word';
 
 -- Switch to the greenlight DB
 \c greenlight;
