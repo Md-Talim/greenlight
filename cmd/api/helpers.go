@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/md-talim/greenlight/internal/validator"
 )
 
 type envelop map[string]any
@@ -77,6 +79,49 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst any
 	}
 
 	return nil
+}
+
+// readString returns a string value from the query string, or the provided
+// default value if not matching key could be found
+func (app *application) readString(qs url.Values, key, defaultValue string) string {
+	s := qs.Get(key)
+
+	if s == "" {
+		return defaultValue
+	}
+
+	return s
+}
+
+// readCSV returns a comma separated string slice from the value from query string.
+// If no matching key could be found, it returns the provided default value.
+func (app *application) readCSV(qs url.Values, key string, defaultValue []string) []string {
+	csv := qs.Get(key)
+
+	if csv == "" {
+		return defaultValue
+	}
+
+	return strings.Split(csv, ",")
+}
+
+// readInt converts and returns an integer value from the value from query string.
+// If no matching key could be found it returns the provided default value.
+// If the value couldn't be converted to an integer, then we record an error message in the provided Validator instance.
+func (app *application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
+	s := qs.Get(key)
+
+	if s == "" {
+		return defaultValue
+	}
+
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		v.AddError(key, "must be an integer value")
+		return defaultValue
+	}
+
+	return i
 }
 
 func (app *application) writeJSON(w http.ResponseWriter, status int, data envelop, headers http.Header) error {
