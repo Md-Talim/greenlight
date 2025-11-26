@@ -4,15 +4,15 @@ A JSON API for retrieving and managing movie information, built as a learning pr
 
 ## API Endpoints
 
-| Method | URL Pattern     | Action                              |
-| ------ | --------------- | ----------------------------------- |
-| GET    | /v1/healthcheck | Show application health and version |
-| GET    | /v1/movies      | Show all movies                     |
-| POST   | /v1/movies      | Create a new movie                  |
-| GET    | /v1/movies/:id  | Show specific movie details         |
-| PATCH  | /v1/movies/:id  | Update movie details                |
-| DELETE | /v1/movies/:id  | Delete a movie                      |
-| POST   | /v1/users       | Register a new user                 |
+| Method   | URL Pattern       | Action                              |
+| -------- | ----------------- | ----------------------------------- |
+| `GET`    | `/v1/healthcheck` | Show application health and version |
+| `GET`    | `/v1/movies`      | Show all movies                     |
+| `POST`   | `/v1/movies`      | Create a new movie                  |
+| `GET`    | `/v1/movies/:id`  | Show specific movie details         |
+| `PATCH`  | `/v1/movies/:id`  | Update movie details                |
+| `DELETE` | `/v1/movies/:id`  | Delete a movie                      |
+| `POST`   | `/v1/users`       | Register a new user                 |
 
 ## Features
 
