@@ -148,7 +148,7 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 // background() helper wraps a panic recovery logic
 // and launches the function in a background goroutine
 func (app *application) background(fn func()) {
-	go func() {
+	app.wg.Go(func() {
 		defer func() {
 			pv := recover()
 			if pv != nil {
@@ -157,5 +157,5 @@ func (app *application) background(fn func()) {
 		}()
 
 		fn()
-	}()
+	})
 }
