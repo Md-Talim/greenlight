@@ -144,3 +144,18 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 
 	return nil
 }
+
+// background() helper wraps a panic recovery logic
+// and launches the function in a background goroutine
+func (app *application) background(fn func()) {
+	go func() {
+		defer func() {
+			pv := recover()
+			if pv != nil {
+				app.logger.Error(fmt.Sprintf("%v", pv))
+			}
+		}()
+
+		fn()
+	}()
+}
