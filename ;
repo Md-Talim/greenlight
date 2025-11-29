@@ -133,6 +133,8 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	fmt.Printf("%v\n", user)
+
 	err = app.writeJSON(w, http.StatusOK, envelop{"user": user}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
