@@ -3,10 +3,13 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/md-talim/greenlight/internal/data"
 	"github.com/md-talim/greenlight/internal/validator"
 )
+
+const tokenExpiry = 3 * 24 * time.Hour // 3 Days
 
 func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
@@ -52,9 +55,20 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	token, err := app.models.Tokens.New(user.ID, tokenExpiry, data.ScopeActivation)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
 	// background goroutine to send the welcome email
 	app.background(func() {
-		err := app.mailer.Send(user.Email, "user_welcome.tmpl", user)
+		data := map[string]any{
+			"activationToken": token.PlainText,
+			"userID":          user.ID,
+		}
+
+		err := app.mailer.Send(user.Email, "user_welcome.tmpl", data)
 		if err != nil {
 			app.logger.Error(err.Error())
 		}
