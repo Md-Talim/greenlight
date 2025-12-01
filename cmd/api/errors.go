@@ -68,5 +68,11 @@ func (app *application) editConflictResponse(w http.ResponseWriter, r *http.Requ
 // rateLimitExceededResponse sends a 429 Too Many Requests response along with error message
 func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http.Request) {
 	message := "rate limit exceeded"
-	app.errorResponse(w, r,http.StatusTooManyRequests, message)
+	app.errorResponse(w, r, http.StatusTooManyRequests, message)
+}
+
+// rateLimitExceededResponse sends a 401 Unauthorized response along with error message
+func (app *application) invalidCredentialsResponse(w http.ResponseWriter, r *http.Request) {
+	message := "invalid authentication credentials"
+	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }
