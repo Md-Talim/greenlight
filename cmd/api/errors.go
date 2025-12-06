@@ -92,8 +92,14 @@ func (app *application) authenticationRequiredResponse(w http.ResponseWriter, r 
 	app.errorResponse(w, r, http.StatusUnauthorized, message)
 }
 
-// inactiveAccountResponse a 403 Forbidden response and an error message
+// inactiveAccountResponse sends a 403 Forbidden response and an error message
 func (app *application) inactiveAccountResponse(w http.ResponseWriter, r *http.Request) {
 	message := "your user account must be activated to access this resource"
-	app.errorResponse(w, r, http.StatusUnauthorized, message)
+	app.errorResponse(w, r, http.StatusForbidden, message)
+}
+
+// notPermittedResponse sends a 403 Forbidden response and an error message
+func (app *application) notPermittedResponse(w http.ResponseWriter, r *http.Request) {
+	message := "your user account doesn't have the necessary permissions to access this resource"
+	app.errorResponse(w, r, http.StatusForbidden, message)
 }
